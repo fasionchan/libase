@@ -13,7 +13,7 @@ Changelog:
 
 '''
 
-VERSION = '1.0'
+VERSION = '1.0.1'
 
 from setuptools import (
     setup,
@@ -26,7 +26,8 @@ setup(
     author_email='fasionchan@gmail.com',
     packages=[
         'libase',
-        'libase.multirun'
+        'libase.multirun',
+        'libase.server',
         ],
     scripts=[
         ],
