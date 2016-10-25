@@ -13,7 +13,7 @@ Changelog:
 
 '''
 
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 
 from setuptools import (
     setup,
@@ -27,7 +27,10 @@ setup(
     packages=[
         'libase',
         'libase.multirun',
+        'libase.platform',
+        'libase.platform.syscall',
         'libase.server',
+        'libase.util',
         ],
     scripts=[
         ],
