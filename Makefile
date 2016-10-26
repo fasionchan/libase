@@ -12,7 +12,7 @@ egg:
 	python setup.py egg_info
 
 wheel:
-	python setup.py sdist
+	SUBVERSION="$$(cat misc/subversion)" python setup.py sdist
 
 build: libase setup.py
 	python setup.py build
@@ -22,5 +22,10 @@ clean:
 	rm -rf dist
 	rm -rf libase.egg-info
 
-upload: clean wheel
+new_version:
+	subversion="$$(cat misc/subversion)" && echo "$${subversion}+1" | bc > misc/subversion
+
+new_wheel: clean new_version wheel
+
+upload: new_wheel
 	twine upload dist/*
