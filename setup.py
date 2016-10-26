@@ -26,6 +26,7 @@ setup(
     author_email='fasionchan@gmail.com',
     packages=[
         'libase',
+        'libase.client',
         'libase.multirun',
         'libase.platform',
         'libase.platform.syscall',
