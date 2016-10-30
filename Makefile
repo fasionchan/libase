@@ -21,6 +21,7 @@ clean:
 	rm -rf build
 	rm -rf dist
 	rm -rf libase.egg-info
+	find . -name '*.pyc' -delete
 
 new_version:
 	subversion="$$(cat misc/subversion)" && echo "$${subversion}+1" | bc > misc/subversion

@@ -17,11 +17,11 @@ import ctypes
 import ctypes.util
 
 from libase.util.decorator import (
-    call_now,
+    eval_now,
     catch_exc_quiet,
     )
 
-@call_now
+@eval_now
 @catch_exc_quiet
 def libc():
     name = ctypes.util.find_library('c')

@@ -38,8 +38,10 @@ def main():
             'libase',
             'libase.client',
             'libase.multirun',
+            'libase.net',
             'libase.platform',
             'libase.platform.syscall',
+            'libase.runtime',
             'libase.server',
             'libase.util',
             'libase.vendor',
@@ -50,6 +52,7 @@ def main():
         package_data={
             },
         install_requires=[
+            'ordereddict',
             ],
         )
 

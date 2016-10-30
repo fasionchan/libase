@@ -22,6 +22,19 @@ import functools
 def call_now(func):
     '''
     立即调用修饰器
+    调用被修饰函数。
+
+    func - 被修饰函数
+    '''
+
+    func()
+
+    return func
+
+
+def eval_now(func):
+    '''
+    立即调用修饰器
     调用被修饰函数并回传结果。
 
     func - 被修饰函数

@@ -25,7 +25,7 @@ from copy import deepcopy
 from urlparse import urlparse, parse_qsl
 
 from libase.util.decorator import (
-    call_now,
+    eval_now,
     catch_exc_quiet,
     )
 
@@ -39,7 +39,7 @@ def uriparse(uri):
     return params
 
 
-@call_now
+@eval_now
 class uri2service(object):
 
     def __init__(self):

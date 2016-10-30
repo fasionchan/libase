@@ -15,21 +15,28 @@ Changelog:
 
 import requests
 
+from libase.client.api_client import (
+    ApiClient,
+    )
+
 
 class Book(object):
 
-    def __init__(self):
-        self.uri_base = 'https://api.douban.com/v2'
+    API_BASE = 'https://api.douban.com/v2'
 
-        self.uri_book_isbn = '%s/book/isbn/%%s' % (self.uri_base,)
+    def __init__(self, api_base=API_BASE):
+        self.api_base = api_base
+        self.api_client = ApiClient(api_base=self.api_base)
+
+        self.book = self.api_client.book
+        self.book_by_id = self.book
+        self.book_by_isbn = self.book.isbn
 
     def get_info_by_id(self, _id):
         return None
 
     def get_info_by_isbn(self, isbn):
-        url = self.uri_book_isbn % (isbn,)
-        print url
-        return requests.get(url).json()
+        return self.book_by_isbn[isbn].get().json()
 
     def get_info(self, _id=None, isbn=None):
         if _id is not None:
