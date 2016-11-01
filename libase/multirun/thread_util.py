@@ -16,6 +16,10 @@ Changelog:
 import signal
 import threading
 
+from libase.platform.syscall import (
+    get_thread_number,
+    )
+
 
 class ServeAsyncMixin(object):
     '''
