@@ -46,6 +46,8 @@ def main():
             'libase.util',
             'libase.vendor',
             'libase.vendor.douban',
+            'libase.vendor.tencent',
+            'libase.vendor.tencent.weixin',
             ],
         scripts=[
             ],
