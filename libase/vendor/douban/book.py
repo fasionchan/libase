@@ -29,14 +29,15 @@ class Book(object):
         self.api_client = ApiClient(api_base=self.api_base)
 
         self.book = self.api_client.book
-        self.book_by_id = self.book
-        self.book_by_isbn = self.book.isbn
+        self.by_id = self.book
+        self.by_isbn = self.book.isbn
+        self.series = self.book.series
 
     def get_info_by_id(self, _id):
-        return None
+        return self.by_id[_id].get().json()
 
     def get_info_by_isbn(self, isbn):
-        return self.book_by_isbn[isbn].get().json()
+        return self.by_isbn[isbn].get().json()
 
     def get_info(self, _id=None, isbn=None):
         if _id is not None:
@@ -44,3 +45,9 @@ class Book(object):
 
         if isbn:
             return self.get_info_by_isbn(isbn=isbn)
+
+    def get_series_info(self, _id):
+        return self.series[_id].get().json()
+
+    def get_series_books(self, _id):
+        return self.series[_id].books.get().json()
