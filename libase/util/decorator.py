@@ -338,3 +338,34 @@ def cache(timeout=3):
         return wrapper
 
     return source
+
+
+class ClassPropertyDescriptor(object):
+
+    def __init__(self, fget, fset=None, fdel=None):
+        self.fget = fget
+        self.fset = fset
+        self.fdel = fdel
+
+    def __get__(self, obj, cls=None):
+        if cls is None:
+            cls = type(obj)
+        return self.fget.__get__(obj, cls)()
+
+    def __set__(self, obj, value):
+        if not self.fset:
+            raise AttributeError('can not set attribute')
+        cls = type(obj)
+        return self.fset.__get__(obj, cls)(value)
+
+    def __delete__(self, obj):
+        if not self.fset:
+            raise AttributeError('can not delete attribute')
+        cls = type(obj)
+        return self.fdel.__get__(obj, cls)()
+
+
+def classproperty(func):
+    if not isinstance(func, (classmethod, staticmethod)):
+        func = classmethod(func)
+    return ClassPropertyDescriptor(func)
