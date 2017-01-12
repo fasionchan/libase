@@ -35,7 +35,9 @@ class MongoDocument(dict):
         return MongoDocument
 
     def __init__(self, doc=None, coll=None):
-        if doc is not None:
+        if doc is None:
+            super(MongoDocument, self).__init__()
+        else:
             super(MongoDocument, self).__init__(doc)
 
         if coll is not None:
