@@ -17,17 +17,20 @@ Changelog:
 from libase.util.data import (
     alias_dict_items,
     combine_dicts,
-    get_dict_property,
-    get_dict_properties,
+    AttrValuePairDict,
+    PropertyDict,
+    ListedPropertyDict,
 )
 
 
-class Text(dict):
+class TextBase(object):
 
     LANGS = {
         'zh_cn',
         'en_us',
     }
+
+    PROPERTIES = LANGS
 
     ALIASES = {
         'zh': 'zh_cn',
@@ -35,9 +38,6 @@ class Text(dict):
     }
 
     DEFAULT_LANG = 'zh'
-
-    locals().update(get_dict_properties(names=LANGS))
-    alias_dict_items(locals(), ALIASES)
 
     @classmethod
     def derive(cls, langs=None, mapping=None):
@@ -51,21 +51,16 @@ class Text(dict):
 
             ALIASES = combine_dicts(cls.ALIASES, mapping)
 
-            locals().update(get_dict_properties(names=LANGS))
+            locals().update(PropertyDict.create_properties(names=LANGS))
             alias_dict_items(locals(), ALIASES)
 
         return Text
 
-    def __init__(self, mapping=None, _lang=None, _default_lang=None,
-            _encoding='utf8', **kwargs):
+    def __init__(self, lang=None, default_lang=DEFAULT_LANG, encoding='utf8'):
 
-        args = () if mapping is None else (mapping,)
-        super(Text, self).__init__(*args, **kwargs)
-
-        self.default_lang = _default_lang or self.DEFAULT_LANG
-        self.lang = _lang or self.default_lang
-
-        self.encoding = _encoding
+        self.default_lang = default_lang or self.DEFAULT_LANG
+        self.lang = lang or self.default_lang
+        self.encoding = encoding
 
     @property
     def text(self):
@@ -73,6 +68,10 @@ class Text(dict):
         if text is not None:
             return text
         return getattr(self, self.default_lang)
+
+    @text.setter
+    def text(self, value):
+        setattr(self, self.lang, value)
 
     def __str__(self):
         text = self.text
@@ -85,3 +84,55 @@ class Text(dict):
         if isinstance(text, unicode):
             return text
         return text.decode(self.encoding)
+
+
+class Text(TextBase, PropertyDict):
+
+    locals().update(PropertyDict.create_properties(names=TextBase.LANGS))
+    alias_dict_items(locals(), TextBase.ALIASES)
+
+    def __init__(self, mapping=None, _lang=None, _default_lang=None,
+            _encoding='utf8', **kwargs):
+
+        args = () if mapping is None else (mapping,)
+
+        TextBase.__init__(
+            self,
+            lang=_lang,
+            default_lang=_default_lang,
+            encoding=_encoding,
+        )
+
+        PropertyDict.__init__(self, *args, **kwargs)
+
+
+class ListedText(TextBase, ListedPropertyDict):
+
+    locals().update(ListedPropertyDict.create_properties(attrs=TextBase.LANGS))
+    alias_dict_items(locals(), TextBase.ALIASES)
+
+    def __init__(self, iterator=None, _lang=None, _default_lang=None,
+            _encoding='utf8', **kwargs):
+
+        TextBase.__init__(
+            self,
+            lang=_lang,
+            default_lang=_default_lang,
+            encoding=_encoding,
+        )
+
+        items = []
+
+        for item in iterator or ():
+            if isinstance(item, (tuple, list)):
+                attr, value = item
+                items.append(AttrValuePairDict(attr=attr, value=value))
+            elif isinstance(item, AttrValuePairDict):
+                items.append(item)
+            elif isinstance(item, dict):
+                items.append(AttrValuePairDict(item))
+
+        ListedPropertyDict.__init__(self, items)
+
+        for attr, value in kwargs.iteritems():
+            setattr(self, attr, value)

@@ -1,0 +1,19 @@
+#!/bin/bash
+# FileName:   unittest
+# Author:     Fasion Chan
+# @contact:   fasionchan@gmail.com
+# @version:   $Id$
+#
+# Description:
+#
+# Changelog:
+#
+#
+
+FILE_PATH="$(realpath -m "$0")"
+DIR_PATH="$(dirname "$FILE_PATH")"
+
+(
+    cd "$DIR_PATH/..";
+    PYTHONPATH=.:./tests/unittest py.test tests/unittest
+)
