@@ -38,6 +38,13 @@ from libase.util.log import (
 logger = LoggerMaintainer.create_logger(__name__)
 
 
+def verify_weixin_request(signature, timestamp, nonce, token):
+    raw = [ensure_string(token), ensure_string(timestamp), ensure_string(nonce)]
+    raw.sort()
+    raw = ''.join(raw)
+    return hashlib.sha1(raw).hexdigest() == signature
+
+
 class AccessToken(TimeCachedValueMixin):
 
     def __init__(self, appid, secret):

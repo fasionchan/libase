@@ -369,3 +369,25 @@ def classproperty(func):
     if not isinstance(func, (classmethod, staticmethod)):
         func = classmethod(func)
     return ClassPropertyDescriptor(func)
+
+
+def cached_property(attr_name, property_func=property):
+
+    def property_wrapper(func):
+
+        @property_func
+        def proxy(bind, *args, **kwargs):
+
+            value = getattr(bind, attr_name, None)
+            if value is not None:
+                return value
+
+            value = func(bind, *args, **kwargs)
+
+            setattr(bind, attr_name, value)
+
+            return value
+
+        return proxy
+
+    return property_wrapper

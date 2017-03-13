@@ -36,7 +36,6 @@ class WechatAuth(object):
         self.appsecret = appsecret
         self.redirect_uri = redirect_uri
 
-
     def get_auth_uri(self, scope='snsapi_base', state=''):
         query = OrderedDict()
 

@@ -19,8 +19,8 @@ from flask import (
     Flask,
 )
 
-from .blueprint import (
-    wechat_auth,
+from ..blueprint import (
+    WechatAuthHandler,
 )
 
 app = application = Flask(__name__)
@@ -48,4 +48,4 @@ def initiate_config():
             app.config[name] = value
 initiate_config()
 
-app.register_blueprint(wechat_auth)
+app.register_blueprint(WechatAuthHandler().blueprint)

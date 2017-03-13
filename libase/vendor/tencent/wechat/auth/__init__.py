@@ -3,7 +3,7 @@
 
 '''
 FileName:   __init__.py
-Author:     Chen Yanfei
+Author:     Fasion Chan
 @contact:   fasionchan@gmail.com
 @version:   $Id$
 
